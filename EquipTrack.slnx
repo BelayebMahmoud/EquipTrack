@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EquipTrack.API/EquipTrack.API.csproj" />
+  <Project Path="EquipTrack.Application/EquipTrack.Application.csproj" />
+  <Project Path="EquipTrack.Domain/EquipTrack.Domain.csproj" />
+  <Project Path="EquipTrack.Infrastructure/EquipTrack.Infrastructure.csproj" />
+</Solution>
