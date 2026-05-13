@@ -18,7 +18,7 @@ public class EmployeeService : IEmployeeService
     public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
     {
         var employees = await _employeeRepository.GetAllAsync();
-        return employees.Select(e => new EmployeeDto { Id = e.Id, Name = e.Name, Department = e.Department });
+        return employees.Select(e => new EmployeeDto { Id = e.Id, Name = e.Name, Department = e.Department, Email = e.Email });
     }
 
     public async Task<int> CreateAsync(CreateEmployeeDto dto)

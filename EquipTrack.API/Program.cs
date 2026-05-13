@@ -24,7 +24,6 @@ builder.Services.AddScoped<IAssetService, AssetService>();   // NEW
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IAllocationRepository, AllocationRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-// builder.Services.AddScoped<IAssetService, AssetService>(); // Implement AssetService in Application layer
 
 var app = builder.Build();
 

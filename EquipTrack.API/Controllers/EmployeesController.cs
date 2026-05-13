@@ -24,6 +24,9 @@ public class EmployeesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<int>> Create([FromBody] CreateEmployeeDto dto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         var id = await _employeeService.CreateAsync(dto);
         return CreatedAtAction(nameof(GetAll), new { id }, id);
     }
