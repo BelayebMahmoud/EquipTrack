@@ -18,7 +18,13 @@ public class EmployeeService : IEmployeeService
     public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
     {
         var employees = await _employeeRepository.GetAllAsync();
-        return employees.Select(e => new EmployeeDto { Id = e.Id, Name = e.Name, Department = e.Department, Email = e.Email });
+        return employees.Select(MapToDto);
+    }
+
+    public async Task<EmployeeDto?> GetByIdAsync(int id)
+    {
+        var employee = await _employeeRepository.GetByIdAsync(id);
+        return employee == null ? null : MapToDto(employee);
     }
 
     public async Task<int> CreateAsync(CreateEmployeeDto dto)
@@ -28,4 +34,12 @@ public class EmployeeService : IEmployeeService
         await _unitOfWork.SaveChangesAsync();
         return employee.Id;
     }
+
+    private static EmployeeDto MapToDto(Employee e) => new()
+    {
+        Id = e.Id,
+        Name = e.Name,
+        Department = e.Department,
+        Email = e.Email
+    };
 }

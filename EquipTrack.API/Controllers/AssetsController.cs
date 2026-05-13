@@ -17,36 +17,34 @@ public class AssetsController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AssetDto>>> GetAll()
+        => Ok(await _assetService.GetAllAssetsAsync());
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<AssetDto>> GetById(int id)
     {
-        var assets = await _assetService.GetAllAssetsAsync();
-        return Ok(assets);
+        var asset = await _assetService.GetByIdAsync(id);
+        return asset == null ? NotFound() : Ok(asset);
     }
 
     [HttpPost]
     public async Task<ActionResult<int>> Create([FromBody] CreateAssetDto dto)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var assetId = await _assetService.CreateAssetAsync(dto);
-
-        // Return 201 Created
-        return CreatedAtAction(nameof(GetAll), new { id = assetId }, assetId);
+        return CreatedAtAction(nameof(GetById), new { id = assetId }, assetId);
     }
-    // Add this method to existing AssetsController
+
     [HttpPost("{id}/assign/{employeeId}")]
     public async Task<IActionResult> AssignToEmployee(int id, int employeeId)
     {
-        try
-        {
-            var result = await _assetService.AssignAssetAsync(id, employeeId);
-            if (!result) return NotFound("Asset or Employee not found.");
+        var result = await _assetService.AssignAssetAsync(id, employeeId);
+        return result ? Ok("Asset assigned successfully.") : NotFound("Asset or Employee not found.");
+    }
 
-            return Ok("Asset assigned successfully.");
-        }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(ex.Message); // Handles Domain Exceptions (e.g., Asset not available)
-        }
+    [HttpPost("{id}/return")]
+    public async Task<IActionResult> Return(int id)
+    {
+        var result = await _assetService.ReturnAssetAsync(id);
+        return result ? Ok("Asset returned successfully.") : NotFound("Asset or active allocation not found.");
     }
 }

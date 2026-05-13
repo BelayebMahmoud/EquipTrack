@@ -15,4 +15,11 @@ public class Asset
             throw new InvalidOperationException("Asset is not available for assignment.");
         Status = AssetStatus.InUse;
     }
+
+    public void Return()
+    {
+        if (Status != AssetStatus.InUse)
+            throw new InvalidOperationException("Asset is not currently in use and cannot be returned.");
+        Status = AssetStatus.Available;
+    }
 }

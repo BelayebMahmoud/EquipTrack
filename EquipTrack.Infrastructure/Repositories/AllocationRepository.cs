@@ -12,11 +12,16 @@ public class AllocationRepository : IAllocationRepository
 
     public async Task AddAsync(Allocation allocation) => await _context.Allocations.AddAsync(allocation);
 
+    public async Task<IEnumerable<Allocation>> GetAllAsync() =>
+        await _context.Allocations.Include(a => a.Asset).Include(a => a.Employee).ToListAsync();
+
     public async Task<IEnumerable<Allocation>> GetByAssetIdAsync(int assetId) =>
-        await _context.Allocations.Where(a => a.AssetId == assetId).ToListAsync();
+        await _context.Allocations.Include(a => a.Asset).Include(a => a.Employee)
+            .Where(a => a.AssetId == assetId).ToListAsync();
 
     public async Task<IEnumerable<Allocation>> GetByEmployeeIdAsync(int employeeId) =>
-        await _context.Allocations.Where(a => a.EmployeeId == employeeId).ToListAsync();
+        await _context.Allocations.Include(a => a.Asset).Include(a => a.Employee)
+            .Where(a => a.EmployeeId == employeeId).ToListAsync();
 
     public async Task<Allocation?> GetActiveByAssetIdAsync(int assetId) =>
         await _context.Allocations.FirstOrDefaultAsync(a => a.AssetId == assetId && a.ReturnDate == null);

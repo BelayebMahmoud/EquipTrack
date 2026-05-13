@@ -3,4 +3,5 @@
   <Project Path="EquipTrack.Application/EquipTrack.Application.csproj" />
   <Project Path="EquipTrack.Domain/EquipTrack.Domain.csproj" />
   <Project Path="EquipTrack.Infrastructure/EquipTrack.Infrastructure.csproj" />
+  <Project Path="EquipTrack.Tests/EquipTrack.Tests.csproj" />
 </Solution>

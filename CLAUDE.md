@@ -254,23 +254,27 @@ Domain exceptions (`InvalidOperationException`) from `Asset.Assign()` are caught
 - [x] Domain entities: `Asset`, `Employee`, `Allocation`
 - [x] Repository interfaces (`IAssetRepository`, `IEmployeeRepository`, `IAllocationRepository`)
 - [x] `IUnitOfWork` interface and `UnitOfWork` implementation
-- [x] `AssetService`: list all, create, assign to employee (with domain guard)
-- [x] `EmployeeService`: list all, create
-- [x] `AssetsController`: GET all, POST create, POST assign
-- [x] `EmployeesController`: GET all, POST create
+- [x] `AssetService`: list all, get by id, create, assign to employee, return asset
+- [x] `EmployeeService`: list all, get by id, create
+- [x] `AllocationService`: list all, filter by asset, filter by employee
+- [x] `AssetsController`: GET all, GET by id, POST create, POST assign, POST return
+- [x] `EmployeesController`: GET all, GET by id, POST create
+- [x] `AllocationsController`: GET all, GET by asset id, GET by employee id
+- [x] Input validation — `[Required]`, `[MaxLength]`, `[EmailAddress]` on all create DTOs; `ModelState.IsValid` checked in all POST endpoints
+- [x] `Asset.Return()` domain method — `InUse → Available` with guard
+- [x] `Asset.Assign()` domain method — `Available → InUse` with guard
+- [x] `IAllocationRepository` full CRUD — `AddAsync`, `GetAllAsync`, `GetByAssetIdAsync`, `GetByEmployeeIdAsync`, `GetActiveByAssetIdAsync`
+- [x] Global exception handler middleware (`ExceptionHandlerMiddleware`) — maps `InvalidOperationException` → 400, unhandled → 500
+- [x] `EmployeeDto` exposes `Email` field
 - [x] EF Core SQL Server setup with `AppDbContext`
 - [x] Initial migration (`InitialCreate`)
 - [x] Swagger / OpenAPI in development
+- [x] Unit tests — `EquipTrack.Tests` (xUnit + Moq): 15 tests covering `AssetService` and `EmployeeService`
 
 ## What Is Not Yet Implemented
 
-- [ ] **Return/unassign an asset** — `ReturnDate` exists on `Allocation` but there is no endpoint or service method to set it; the asset status would need to revert to `Available`
-- [ ] **Allocation query endpoints** — `IAllocationRepository` is write-only; no way to query allocation history via the API
-- [ ] **`GetById` endpoints** for assets and employees
-- [ ] **Input validation** — `CreateAssetDto` and `CreateEmployeeDto` have no `[Required]` or FluentValidation rules; `AssetsController.Create` checks `ModelState.IsValid` but there is nothing to trigger a failure
 - [ ] **`DELETE` / `PUT` endpoints** for assets and employees
-- [ ] **Error handling middleware** — domain exceptions are caught per-controller; no global exception handler
-- [ ] **Unit and integration tests** — no test project exists yet
 - [ ] **Authentication and authorisation** — no identity or JWT setup
-- [ ] **`AssetStatus` transitions** beyond `Available -> InUse` (e.g. `InUse -> Available` on return, `UnderMaintenance`, `Retired`)
-- [ ] **`EmployeeDto` email field** — `Email` is stored but not exposed in the read DTO
+- [ ] **`AssetStatus` transitions** to `UnderMaintenance` or `Retired`
+- [ ] **Integration tests** — no test project with real database yet
+- [ ] **Pagination** on list endpoints

@@ -17,17 +17,20 @@ public class EmployeesController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetAll()
+        => Ok(await _employeeService.GetAllAsync());
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<EmployeeDto>> GetById(int id)
     {
-        return Ok(await _employeeService.GetAllAsync());
+        var employee = await _employeeService.GetByIdAsync(id);
+        return employee == null ? NotFound() : Ok(employee);
     }
 
     [HttpPost]
     public async Task<ActionResult<int>> Create([FromBody] CreateEmployeeDto dto)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var id = await _employeeService.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetAll), new { id }, id);
+        return CreatedAtAction(nameof(GetById), new { id }, id);
     }
 }
