@@ -269,12 +269,22 @@ Domain exceptions (`InvalidOperationException`) from `Asset.Assign()` are caught
 - [x] EF Core SQL Server setup with `AppDbContext`
 - [x] Initial migration (`InitialCreate`)
 - [x] Swagger / OpenAPI in development
-- [x] Unit tests — `EquipTrack.Tests` (xUnit + Moq): 15 tests covering `AssetService` and `EmployeeService`
+- [x] Unit tests — `EquipTrack.Tests` (xUnit + Moq): 19 tests covering `AssetService`, `EmployeeService`, and `AuthService`
+- [x] JWT authentication — `POST /api/auth/register` and `POST /api/auth/login`
+- [x] Role-based authorization — `Admin` and `User` roles via `[Authorize(Roles = "Admin")]`
+- [x] `User` entity and `UserRole` enum (`User`, `Admin`) in Domain
+- [x] `IUserRepository` with `GetByUsernameAsync` and `AnyAsync`
+- [x] `IPasswordHasher` and `ITokenService` interfaces in Application/Services
+- [x] `BcryptPasswordHasher` (BCrypt.Net-Next) and `JwtTokenService` in Infrastructure/Auth
+- [x] `JwtSettings` POCO with Options binding (`Secret`, `Issuer`, `Audience`, `ExpiryMinutes`)
+- [x] Admin seeding on first startup from `AdminSeed` config section (`admin` / `Admin@1234`)
+- [x] `ExceptionHandlerMiddleware` extended: `UnauthorizedAccessException` → 401
+- [x] Swagger configured with JWT Bearer security definition ("Authorize" button)
+- [x] `AddUsersTable` EF Core migration (unique index on `Username`)
 
 ## What Is Not Yet Implemented
 
 - [ ] **`DELETE` / `PUT` endpoints** for assets and employees
-- [ ] **Authentication and authorisation** — no identity or JWT setup
 - [ ] **`AssetStatus` transitions** to `UnderMaintenance` or `Retired`
 - [ ] **Integration tests** — no test project with real database yet
 - [ ] **Pagination** on list endpoints

@@ -22,6 +22,11 @@ public class ExceptionHandlerMiddleware
             _logger.LogWarning(ex, "Domain rule violation: {Message}", ex.Message);
             await WriteErrorAsync(context, StatusCodes.Status400BadRequest, ex.Message);
         }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogWarning(ex, "Unauthorized access: {Message}", ex.Message);
+            await WriteErrorAsync(context, StatusCodes.Status401Unauthorized, ex.Message);
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unhandled exception");

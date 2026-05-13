@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(New-Item *)"
+      "PowerShell(New-Item *)",
+      "PowerShell(dotnet tool install *)",
+      "PowerShell(dotnet ef migrations *)",
+      "PowerShell(dotnet ef database *)"
     ]
   }
 }

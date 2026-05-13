@@ -1,11 +1,13 @@
 using EquipTrack.Application.DTOs;
 using EquipTrack.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EquipTrack.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class AllocationsController : ControllerBase
 {
     private readonly IAllocationService _allocationService;

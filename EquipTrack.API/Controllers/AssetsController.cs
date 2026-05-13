@@ -1,5 +1,6 @@
-﻿using EquipTrack.Application.DTOs;
+using EquipTrack.Application.DTOs;
 using EquipTrack.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EquipTrack.API.Controllers;
@@ -16,10 +17,12 @@ public class AssetsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<AssetDto>>> GetAll()
         => Ok(await _assetService.GetAllAssetsAsync());
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<AssetDto>> GetById(int id)
     {
         var asset = await _assetService.GetByIdAsync(id);
@@ -27,6 +30,7 @@ public class AssetsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<int>> Create([FromBody] CreateAssetDto dto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -35,6 +39,7 @@ public class AssetsController : ControllerBase
     }
 
     [HttpPost("{id}/assign/{employeeId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AssignToEmployee(int id, int employeeId)
     {
         var result = await _assetService.AssignAssetAsync(id, employeeId);
@@ -42,6 +47,7 @@ public class AssetsController : ControllerBase
     }
 
     [HttpPost("{id}/return")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Return(int id)
     {
         var result = await _assetService.ReturnAssetAsync(id);

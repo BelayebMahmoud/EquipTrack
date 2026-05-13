@@ -1,5 +1,6 @@
-﻿using EquipTrack.Application.DTOs;
+using EquipTrack.Application.DTOs;
 using EquipTrack.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EquipTrack.API.Controllers;
@@ -16,10 +17,12 @@ public class EmployeesController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetAll()
         => Ok(await _employeeService.GetAllAsync());
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<EmployeeDto>> GetById(int id)
     {
         var employee = await _employeeService.GetByIdAsync(id);
@@ -27,6 +30,7 @@ public class EmployeesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<int>> Create([FromBody] CreateEmployeeDto dto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
